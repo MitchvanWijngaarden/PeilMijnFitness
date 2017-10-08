@@ -1,8 +1,11 @@
 package nl.mitchvanwijngaarden.peilmijnfitness;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +15,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import nl.mitchvanwijngaarden.peilmijnfitness.Helpers.AuthenticationChecker;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Excercise;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +42,33 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        AuthenticationChecker authChecker = new AuthenticationChecker();
+
+        if(authChecker.isAuthenticated() == false){
+            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            //finish();
+        }
+
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_LONG).show();
+
+        User user = new User();
+        user.setAuthenticationID(currentFirebaseUser.getUid());
+        user.setName("Mitch");
+        Schedule schedule = new Schedule();
+        schedule.setName("5x5 starting strength");
+        Excercise excercise = new Excercise();
+        excercise.setName("Bankdrukken");
+        schedule.addExcercise(excercise);
+        user.addSchedules(schedule);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        //mDatabase.child("users").child(user.getAuthenticationID()).setValue(user);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -43,11 +87,27 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        TextView test = (TextView)header.findViewById(R.id.textView2);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        test.setText(user.getName());
 
-        myRef.setValue("Hello, World!");
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+
+        database.child("users").child(user.getAuthenticationID()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                Log.d("Debug", user.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+
 
     }
 
@@ -89,17 +149,17 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_schedules) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_excercises) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_progress) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_account) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_logout) {
 
         }
 
