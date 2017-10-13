@@ -16,11 +16,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Excercise;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputName, inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -35,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
+        inputName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -92,6 +100,14 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
                                                 Toast.LENGTH_SHORT).show();
                                     } else {
+                                        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+                                        User user = new User();
+                                        user.setAuthenticationID(currentFirebaseUser.getUid());
+                                        user.setName(inputName.getText().toString().trim());
+
+                                        DatabaseReference mDatabase = mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                                        mDatabase.child("users").child(user.getAuthenticationID()).setValue(user);
                                         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                         finish();
                                     }

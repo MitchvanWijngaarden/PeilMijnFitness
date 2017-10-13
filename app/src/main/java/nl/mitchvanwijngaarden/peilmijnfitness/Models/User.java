@@ -13,6 +13,7 @@ public class User {
     private int weight;
     private Date dateOfBirth;
     private ArrayList<Schedule> schedules;
+    private ArrayList<Excercise> excercises;
 
     public String getName() {
         return name;
@@ -51,9 +52,19 @@ public class User {
         this.schedules.add(schedule);
     }
 
+    public ArrayList<Excercise> getExcercises() {
+        return excercises;
+    }
+
+
+    public void addExcercise(Excercise excercise){
+        this.excercises.add(excercise);
+    }
+
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
         this.schedules = new ArrayList<>();
+        this.excercises = new ArrayList<>();
     }
 
     public void setAuthenticationID(String authenticationID){

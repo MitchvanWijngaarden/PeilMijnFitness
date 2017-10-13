@@ -36,4 +36,9 @@
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="name">Naam</string>
+    <string name="title_activity_excercise">ExcerciseActivity</string>
+    <string name="excercise">Naam oefening</string>
+    <string name="add_button">Toevoegen</string>
+    <string name="cancel">Annuleer</string>
 </resources>

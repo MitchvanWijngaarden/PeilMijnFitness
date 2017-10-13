@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Helpers.AuthenticationChecker;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Excercise;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
@@ -51,23 +52,23 @@ public class MainActivity extends AppCompatActivity
             //finish();
         }
 
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_LONG).show();
+//        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+//        Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_LONG).show();
 
-        User user = new User();
-        user.setAuthenticationID(currentFirebaseUser.getUid());
-        user.setName("Mitch");
-        Schedule schedule = new Schedule();
-        schedule.setName("5x5 starting strength");
-        Excercise excercise = new Excercise();
-        excercise.setName("Bankdrukken");
-        schedule.addExcercise(excercise);
-        user.addSchedules(schedule);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-        //mDatabase.child("users").child(user.getAuthenticationID()).setValue(user);
+//        User user = new User();
+//        user.setAuthenticationID(currentFirebaseUser.getUid());
+//        user.setName("Mitch");
+//        Schedule schedule = new Schedule();
+//        schedule.setName("5x5 starting strength");
+//        Excercise excercise = new Excercise();
+//        excercise.setName("Bankdrukken");
+//        schedule.addExcercise(excercise);
+//        user.addSchedules(schedule);
+//
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//
+//
+//        mDatabase.child("users").child(user.getAuthenticationID()).setValue(user);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -90,22 +91,25 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         TextView test = (TextView)header.findViewById(R.id.textView2);
 
-        test.setText(user.getName());
+
+        User user2 = AuthenticatedUser.INSTANCE.getCurrentUser();
+
+        test.setText(user2.getName());
 
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child("users").child(user.getAuthenticationID()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                Log.d("Debug", user.getName());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+//        database.child("users").child(user.getAuthenticationID()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                User user = snapshot.getValue(User.class);
+//                Log.d("Debug", user.getName());
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//        });
 
 
 
@@ -154,7 +158,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_schedules) {
 
         } else if (id == R.id.nav_excercises) {
-
+            startActivity(new Intent(MainActivity.this, ExcerciseActivity.class));
+            finish();
         } else if (id == R.id.nav_progress) {
 
         } else if (id == R.id.nav_account) {
