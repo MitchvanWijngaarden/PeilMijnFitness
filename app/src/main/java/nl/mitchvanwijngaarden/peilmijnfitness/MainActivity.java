@@ -52,33 +52,6 @@ public class MainActivity extends AppCompatActivity
             //finish();
         }
 
-//        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-//        Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_LONG).show();
-
-//        User user = new User();
-//        user.setAuthenticationID(currentFirebaseUser.getUid());
-//        user.setName("Mitch");
-//        Schedule schedule = new Schedule();
-//        schedule.setName("5x5 starting strength");
-//        Excercise excercise = new Excercise();
-//        excercise.setName("Bankdrukken");
-//        schedule.addExcercise(excercise);
-//        user.addSchedules(schedule);
-//
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//
-//
-//        mDatabase.child("users").child(user.getAuthenticationID()).setValue(user);
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -163,6 +136,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_progress) {
 
         } else if (id == R.id.nav_account) {
+            startActivity(new Intent(MainActivity.this, UserpanelActivity.class));
+            finish();
 
         } else if (id == R.id.nav_logout) {
 
