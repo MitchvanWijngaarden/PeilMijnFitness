@@ -94,8 +94,8 @@ public class ExcerciseActivity extends MainActivity {
     private void populateListView(){
         final ListView list = (ListView) findViewById(R.id.exerciselist);
 
-        ArrayAdapter<Excercise> adapter = new ArrayAdapter<Excercise>(
-                this, R.layout.listview_item, currentUser.getExcercises());
+            ArrayAdapter<Excercise> adapter = new ArrayAdapter<Excercise>(
+                    this, R.layout.listview_item, currentUser.getExcercises());
 
 
         list.setAdapter(adapter);

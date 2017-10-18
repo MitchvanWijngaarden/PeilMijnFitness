@@ -20,7 +20,6 @@ public class Schedule {
     }
     public void removeEcercise(Excercise excercise){
         excercises.remove(excercise);
-
     }
 
     public String getName() {
@@ -37,5 +36,12 @@ public class Schedule {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String toString(){
+        if(this.isActive){
+            return "✔ " + this.name;
+        }
+        return this.name;
     }
 }

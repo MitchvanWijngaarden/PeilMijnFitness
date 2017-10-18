@@ -44,4 +44,5 @@
     <string name="dialog_exercise_message">Voer naam in</string>
     <string name="dialog_exercise_title">Oefening</string>
     <string name="edit_button">Bewerk</string>
+    <string name="title_activity_schedule">ScheduleActivity</string>
 </resources>

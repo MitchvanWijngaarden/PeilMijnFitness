@@ -129,6 +129,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_schedules) {
+            startActivity(new Intent(MainActivity.this, ScheduleActivity.class));
+            finish();
 
         } else if (id == R.id.nav_excercises) {
             startActivity(new Intent(MainActivity.this, ExcerciseActivity.class));
