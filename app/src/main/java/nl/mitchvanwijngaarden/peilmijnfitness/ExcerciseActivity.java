@@ -67,7 +67,7 @@ public class ExcerciseActivity extends MainActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             Excercise e = new Excercise();
-                            inputExcercise = (EditText) myLayout.findViewById(R.id.exerciseInput);
+                            inputExcercise = (EditText) myLayout.findViewById(R.id.exerciseNameInput);
                             e.setName(inputExcercise.getText().toString());
                             currentUser.addExcercise(e);
                             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -120,7 +120,7 @@ public class ExcerciseActivity extends MainActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 Excercise e = (Excercise) list.getItemAtPosition(position);
-                                inputExcercise = (EditText) myLayout.findViewById(R.id.exerciseInput);
+                                inputExcercise = (EditText) myLayout.findViewById(R.id.exerciseNameInput);
                                 e.setName(inputExcercise.getText().toString());
                                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -136,7 +136,7 @@ public class ExcerciseActivity extends MainActivity {
 
 
                 AlertDialog dialog = mBuilder.create();
-                inputExcercise = (EditText) myLayout.findViewById(R.id.exerciseInput);
+                inputExcercise = (EditText) myLayout.findViewById(R.id.exerciseNameInput);
                 inputExcercise.setText(list.getItemAtPosition(position).toString());
                 dialog.show();
             }

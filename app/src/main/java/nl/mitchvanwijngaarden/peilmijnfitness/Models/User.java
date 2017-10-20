@@ -47,6 +47,14 @@ public class User {
         return schedules;
     }
 
+    public Schedule getSchedule(Schedule schedule){
+        for (Schedule s : schedules) {
+            if (s.equals(schedule)) {
+                return s;
+            }
+        }
+        return null;
+    }
 
     public void addSchedules(Schedule schedule){
         this.schedules.add(schedule);

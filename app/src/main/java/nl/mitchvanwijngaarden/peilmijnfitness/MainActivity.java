@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         User user2 = AuthenticatedUser.INSTANCE.getCurrentUser();
 
-        test.setText(user2.getName());
+//        test.setText(user2.getName());
 
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();

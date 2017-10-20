@@ -45,4 +45,7 @@
     <string name="dialog_exercise_title">Oefening</string>
     <string name="edit_button">Bewerk</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="title_activity_schedule_details">ScheduleDetailsActivity</string>
+    <string name="exerciseReps">Aantal herhalingen</string>
+    <string name="exerciseSets">Aantal sets</string>
 </resources>

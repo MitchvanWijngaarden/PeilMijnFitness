@@ -2,6 +2,7 @@ package nl.mitchvanwijngaarden.peilmijnfitness;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -13,9 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.content.Intent;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.Serializable;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Excercise;
@@ -51,7 +55,7 @@ public class ScheduleActivity extends MainActivity {
     private void populateListView() {
         final ListView list = (ListView) findViewById(R.id.schedulelist);
 
-        if(currentUser.getSchedules().size() != 0) {
+        if(currentUser.getSchedules() != null && !currentUser.getSchedules().isEmpty()) {
             ArrayAdapter<Schedule> adapter = new ArrayAdapter<Schedule>(
                     this, R.layout.listview_item, currentUser.getSchedules());
 
@@ -63,11 +67,11 @@ public class ScheduleActivity extends MainActivity {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
-
-//
-//                Toast.makeText(getApplicationContext(), o.getName(), Toast.LENGTH_SHORT).show();
-
-
+                    Schedule s = (Schedule) list.getItemAtPosition(position);
+                    Intent i = new Intent(ScheduleActivity.this, ScheduleDetailsActivity.class);
+                    i.putExtra("CURRENTLY_SELECTED_SCHEDULE", (Serializable) s);
+                    startActivity(i);
+                    finish();
                 }
             });
         }

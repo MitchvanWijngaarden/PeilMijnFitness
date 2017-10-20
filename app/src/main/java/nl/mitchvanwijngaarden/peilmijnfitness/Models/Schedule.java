@@ -1,12 +1,16 @@
 package nl.mitchvanwijngaarden.peilmijnfitness.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 @IgnoreExtraProperties
-public class Schedule {
+public class Schedule implements Serializable {
     private String name;
     private ArrayList<Excercise> excercises;
     private boolean isActive;
@@ -20,6 +24,10 @@ public class Schedule {
     }
     public void removeEcercise(Excercise excercise){
         excercises.remove(excercise);
+    }
+
+    public ArrayList<Excercise> getExercises(){
+        return this.excercises;
     }
 
     public String getName() {
@@ -44,4 +52,5 @@ public class Schedule {
         }
         return this.name;
     }
+
 }

@@ -7,7 +7,7 @@
     tools:context="nl.mitchvanwijngaarden.peilmijnfitness.DialogExcercise">
 
     <EditText
-        android:id="@+id/exerciseInput"
+        android:id="@+id/exerciseNameInput"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,5 +16,32 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/excercise" />
+
+    <EditText
+        android:id="@+id/exerciseRepInput"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="@string/exerciseReps" />
+
+    <EditText
+        android:id="@+id/exerciseSetsInput"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="@string/exerciseSets" />
+
+    <Spinner
+        android:id="@+id/exercoseType"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
