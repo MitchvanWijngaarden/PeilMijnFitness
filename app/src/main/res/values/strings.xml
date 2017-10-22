@@ -48,4 +48,5 @@
     <string name="title_activity_schedule_details">ScheduleDetailsActivity</string>
     <string name="exerciseReps">Aantal herhalingen</string>
     <string name="exerciseSets">Aantal sets</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

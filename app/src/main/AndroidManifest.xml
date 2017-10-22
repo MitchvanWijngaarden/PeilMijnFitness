@@ -36,7 +36,7 @@
         <activity
             android:name=".UserpanelActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.mitchvanwijngaarden.peilmijnfitness.MainActivity" />
@@ -62,4 +62,5 @@
                 android:value="nl.mitchvanwijngaarden.peilmijnfitness.ScheduleActivity" />
         </activity>
     </application>
+
 </manifest>
