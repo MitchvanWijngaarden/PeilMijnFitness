@@ -1,7 +1,6 @@
 package nl.mitchvanwijngaarden.peilmijnfitness;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,37 +14,42 @@ import android.widget.EditText;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Exercise;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
 /**
  * Created by Mitch on 10/22/2017.
  */
-
-public class ScheduleDialogFragment extends DialogFragment{
-
+public class ScheduleDetailsDialogFragment extends DialogFragment {
+    private ScheduleDetailsFragment rootFragment;
     private Button dismissButton, addButton;
-    private EditText nameScheduleField;
+    private EditText nameExerciseField, repsExerciseField, setsExerciseField;
     private User currentUser;
-    private ScheduleFragment rootFragment;
     private DatabaseReference mDatabase;
+    private Schedule schedule;
+
+    public void setRootFragment(ScheduleDetailsFragment rootFragment) {
+        this.rootFragment = rootFragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dialog_schedule, container, false);
-        getDialog().setTitle("Nieuw schema");
+        View rootView = inflater.inflate(R.layout.dialog_excercise, container, false);
+        getDialog().setTitle("Nieuwe oefening");
 
         currentUser = AuthenticatedUser.INSTANCE.getCurrentUser();
 
-        nameScheduleField = (EditText) rootView.findViewById(R.id.schedule_name_input);
+        nameExerciseField = (EditText) rootView.findViewById(R.id.exerciseNameInput);
+        repsExerciseField = (EditText) rootView.findViewById(R.id.exerciseRepInput);
+        setsExerciseField = (EditText) rootView.findViewById(R.id.exerciseSetsInput);
 
-        dismissButton = (Button) rootView.findViewById(R.id.dismiss_schedule);
+        dismissButton = (Button) rootView.findViewById(R.id.dismiss_exercise);
         dismissButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,18 +57,19 @@ public class ScheduleDialogFragment extends DialogFragment{
             }
         });
 
-        addButton = (Button) rootView.findViewById(R.id.add_schedule);
+        addButton = (Button) rootView.findViewById(R.id.add_exercise);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Schedule s = new Schedule();
-                s.setName(nameScheduleField.getText().toString());
+                Exercise e = new Exercise();
+                e.setName(nameExerciseField.getText().toString());
+                e.setReps(Integer.parseInt(repsExerciseField.getText().toString()));
+                e.setSets(Integer.parseInt(setsExerciseField.getText().toString()));
 
-                currentUser.addSchedules(s);
+                currentUser.getSchedule(schedule).addExcercise(e);
                 rootFragment.notifyAdapter();
 
                 mDatabase = FirebaseDatabase.getInstance().getReference();
-
 
                 mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -80,17 +85,13 @@ public class ScheduleDialogFragment extends DialogFragment{
                         Log.d("Debug ", "OnCancelled");
                     }
                 });
-
-
-
-
             }
         });
 
         return rootView;
     }
 
-    public void setRootFragment(ScheduleFragment fragment){
-        this.rootFragment = fragment;
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }

@@ -13,7 +13,7 @@ public class User {
     private int weight;
     private Date dateOfBirth;
     private ArrayList<Schedule> schedules;
-    private ArrayList<Excercise> excercises;
+    private ArrayList<Exercise> exercises;
 
     public String getName() {
         return name;
@@ -49,7 +49,7 @@ public class User {
 
     public Schedule getSchedule(Schedule schedule){
         for (Schedule s : schedules) {
-            if (s.equals(schedule)) {
+            if (s == schedule) {
                 return s;
             }
         }
@@ -60,19 +60,19 @@ public class User {
         this.schedules.add(schedule);
     }
 
-    public ArrayList<Excercise> getExcercises() {
-        return excercises;
+    public ArrayList<Exercise> getExcercises() {
+        return exercises;
     }
 
 
-    public void addExcercise(Excercise excercise){
-        this.excercises.add(excercise);
+    public void addExcercise(Exercise excercise){
+        this.exercises.add(excercise);
     }
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
         this.schedules = new ArrayList<>();
-        this.excercises = new ArrayList<>();
+        this.exercises = new ArrayList<>();
     }
 
     public void setAuthenticationID(String authenticationID){

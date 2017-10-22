@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Exercise;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
@@ -21,32 +23,34 @@ import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
  * Created by Mitch on 10/22/2017.
  */
 
-public class ScheduleFragment extends Fragment {
+public class ScheduleDetailsFragment extends Fragment {
 
-    private ListView scheduleList;
+    private ListView exerciseList;
     private TextView listviewItem;
     private User currentUser;
     private FloatingActionButton fab;
-    private ScheduleDialogFragment sdf;
+    private ScheduleDetailsDialogFragment sddf;
     private FragmentManager fm;
-    private ArrayAdapter<Schedule> adapter;
+    private ArrayAdapter<Exercise> adapter;
+    private Schedule selectedSchedule;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        return inflater.inflate(R.layout.fragment_schedule_details, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        scheduleList = (ListView) getView().findViewById(R.id.schedulelist);
+        exerciseList = (ListView) getView().findViewById(R.id.exerciseinschedulelist);
 
         fm = getFragmentManager();
-        sdf = new ScheduleDialogFragment();
-        sdf.setRootFragment(this);
+        sddf = new ScheduleDetailsDialogFragment();
+        sddf.setRootFragment(this);
+        sddf.setSchedule(selectedSchedule);
 
-        getActivity().setTitle("Schemas");
+        getActivity().setTitle(selectedSchedule.getName());
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,36 +67,35 @@ public class ScheduleFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sdf.show(fm, "Schedule add dialog");
+                sddf.show(fm, "Exercise add dialog");
             }
         });
     }
 
     private void populateListView() {
-        if(currentUser.getSchedules() != null && !currentUser.getSchedules().isEmpty()) {
-            adapter = new ArrayAdapter<Schedule>(
-                    getActivity(), android.R.layout.simple_list_item_1, currentUser.getSchedules());
 
-            scheduleList.setAdapter(adapter);
+        Log.d("Schema", selectedSchedule.getExercises().toString());
 
-            scheduleList.setClickable(true);
-            scheduleList.setOnItemClickListener(new ListView.OnItemClickListener() {
+            adapter = new ArrayAdapter<Exercise>(
+                    getActivity(), android.R.layout.simple_list_item_1, currentUser.getSchedule(selectedSchedule).getExercises());
+
+            exerciseList.setAdapter(adapter);
+
+            exerciseList.setClickable(true);
+            exerciseList.setOnItemClickListener(new ListView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
-                    Schedule s = (Schedule) scheduleList.getItemAtPosition(position);
 
-                    ScheduleDetailsFragment scheduleDetailsFragment = new ScheduleDetailsFragment();
-                    scheduleDetailsFragment.setSelectedSchedule(s);
-
-                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.content_main, scheduleDetailsFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
 
                 }
             });
-        }
+
+    }
+
+
+    public void setSelectedSchedule(Schedule schedule){
+        this.selectedSchedule = schedule;
     }
 
     public void notifyAdapter()  {

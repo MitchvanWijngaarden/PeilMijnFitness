@@ -12,21 +12,21 @@ import java.util.ArrayList;
 @IgnoreExtraProperties
 public class Schedule implements Serializable {
     private String name;
-    private ArrayList<Excercise> excercises;
+    private ArrayList<Exercise> excercises;
     private boolean isActive;
 
     public Schedule(){
         this.excercises = new ArrayList<>();
     }
 
-    public void addExcercise(Excercise excercise){
+    public void addExcercise(Exercise excercise){
         excercises.add(excercise);
     }
-    public void removeEcercise(Excercise excercise){
+    public void removeEcercise(Exercise excercise){
         excercises.remove(excercise);
     }
 
-    public ArrayList<Excercise> getExercises(){
+    public ArrayList<Exercise> getExercises(){
         return this.excercises;
     }
 

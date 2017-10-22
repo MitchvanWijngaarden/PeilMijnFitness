@@ -44,4 +44,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/dismiss_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dismiss" />
+
+    <Button
+        android:id="@+id/add_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toevoegen" />
+
 </LinearLayout>

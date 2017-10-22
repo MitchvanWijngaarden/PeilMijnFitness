@@ -125,9 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             User user = dataSnapshot.getValue(User.class);
                                             AuthenticatedUser.INSTANCE.setCurrentUser(user);
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
+
                                         }
 
                                         @Override
@@ -136,6 +134,9 @@ public class LoginActivity extends AppCompatActivity {
                                         }
 
                                     });
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }
                         });

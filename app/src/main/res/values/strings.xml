@@ -24,7 +24,7 @@
     <string name="btn_link_to_register">Nog geen lid? Meld u nu aan!</string>
     <string name="btn_link_to_login">Al geregistreerd. Login!</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
-    <string name="btn_forgot_password">Forgot your password?</string>
+    <string name="btn_forgot_password">Wachtwoord vergeten?</string>
     <string name="btn_reset_password">Reset Password</string>
     <string name="btn_back"><![CDATA[<< Back]]></string>
     <string name="hint_new_email">New Email</string>
@@ -49,4 +49,5 @@
     <string name="exerciseReps">Aantal herhalingen</string>
     <string name="exerciseSets">Aantal sets</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="Schedules">Schema\'s</string>
 </resources>

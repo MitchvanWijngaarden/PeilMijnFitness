@@ -41,26 +41,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.mitchvanwijngaarden.peilmijnfitness.MainActivity" />
         </activity>
-        <activity
-            android:name=".ExcerciseActivity"
-            android:label="@string/title_activity_excercise"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ScheduleActivity"
-            android:label="@string/title_activity_schedule"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.mitchvanwijngaarden.peilmijnfitness.MainActivity" />
-        </activity>
-        <activity
-            android:name=".ScheduleDetailsActivity"
-            android:label="@string/title_activity_schedule_details"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.mitchvanwijngaarden.peilmijnfitness.ScheduleActivity" />
-        </activity>
     </application>
 
 </manifest>

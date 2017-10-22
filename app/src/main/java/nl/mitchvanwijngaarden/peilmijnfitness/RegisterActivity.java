@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import nl.mitchvanwijngaarden.peilmijnfitness.Models.Excercise;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Exercise;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 

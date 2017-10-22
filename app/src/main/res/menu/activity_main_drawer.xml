@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Schema's" />
         <item
-            android:id="@+id/nav_excercises"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Oefeningen" />
-        <item
             android:id="@+id/nav_progress"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Voortgang" />

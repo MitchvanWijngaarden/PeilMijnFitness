@@ -7,23 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import nl.mitchvanwijngaarden.peilmijnfitness.R;
-
 /**
  * Created by Mitch on 10/22/2017.
  */
 
-public class MenuItem1 extends Fragment{
+public class HomeFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.menu, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Menu1");
+        getActivity().setTitle("PeillMijnFitness");
     }
 
 }

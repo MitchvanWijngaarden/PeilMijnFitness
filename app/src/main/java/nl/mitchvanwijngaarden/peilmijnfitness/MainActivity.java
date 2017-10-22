@@ -10,11 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.google.firebase.database.DatabaseReference;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private DatabaseReference mDatabase;
 
 
     @Override
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch(id){
             case R.id.nav_home:
-                fragment = new MenuItem1();
+                fragment = new HomeFragment();
                 break;
             case R.id.nav_schedules:
                 fragment = new ScheduleFragment();
