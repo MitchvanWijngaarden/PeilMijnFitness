@@ -50,4 +50,8 @@
     <string name="exerciseSets">Aantal sets</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="Schedules">Schema\'s</string>
+    <string name="Progress">Voortgang</string>
+    <string name="account">Mijn account</string>
+    <string name="progresInput">Gewicht in kg</string>
+    <string name="btn_offline">Offline modus</string>
 </resources>

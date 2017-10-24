@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.mitchvanwijngaarden.peilmijnfitness.ScheduleFragment">
+    tools:context="nl.mitchvanwijngaarden.peilmijnfitness.WorkoutExerciseFragment">
 
-    <include layout="@layout/content_schedule" />
+    <include layout="@layout/content_progressexercise" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

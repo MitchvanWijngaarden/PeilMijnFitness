@@ -15,12 +15,12 @@
         android:padding="@dimen/activity_horizontal_margin">
 
 
-        <!--<ImageView
-            android:layout_width="@dimen/fab_margin"
-            android:layout_height="@dimen/fab_margin"
+        <ImageView
+            android:layout_width="@dimen/logowidth"
+            android:layout_height="@dimen/logoheight"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/ic_menu_gallery" />-->
+            android:src="@mipmap/ic_login_droplet" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -61,9 +61,23 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:text="@string/btn_login"
             android:textColor="@android:color/white" />
+
+        <!-- Link to Login Screen -->
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/btn_link_to_register"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
 
         <Button
             android:id="@+id/btn_reset_password"
@@ -75,18 +89,16 @@
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor" />
 
-        <!-- Link to Login Screen -->
-
         <Button
-            android:id="@+id/btn_signup"
+            android:id="@+id/btn_offline_mode"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/btn_logut_bg"
-            android:text="@string/btn_link_to_register"
+            android:text="@string/btn_offline"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textColor="@color/white" />
+
     </LinearLayout>
 
     <ProgressBar

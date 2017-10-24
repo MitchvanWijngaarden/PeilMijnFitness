@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
 public class LoginActivity extends AppCompatActivity {

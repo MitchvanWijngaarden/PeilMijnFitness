@@ -84,15 +84,22 @@ public class ScheduleDetailsFragment extends Fragment {
             exerciseList.setClickable(true);
             exerciseList.setOnItemClickListener(new ListView.OnItemClickListener() {
 
-                @Override
-                public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
+                Exercise e = (Exercise) exerciseList.getItemAtPosition(position);
 
+                WorkoutExerciseFragment workoutExerciseFragment = new WorkoutExerciseFragment();
+                workoutExerciseFragment.setSelectedExerciseAndSchedule(e, selectedSchedule);
 
-                }
-            });
+                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.content_main, workoutExerciseFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+            }
+        });
 
     }
-
 
     public void setSelectedSchedule(Schedule schedule){
         this.selectedSchedule = schedule;

@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_schedules:
                 fragment = new ScheduleFragment();
                 break;
+            case R.id.nav_account:
+                fragment = new WorkoutHolderFragment();
+                break;
         }
 
         if (fragment != null) {

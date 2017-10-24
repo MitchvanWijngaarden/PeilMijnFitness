@@ -1,5 +1,7 @@
 package nl.mitchvanwijngaarden.peilmijnfitness.Models;
 
+import android.util.Log;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -49,7 +51,9 @@ public class User {
 
     public Schedule getSchedule(Schedule schedule){
         for (Schedule s : schedules) {
-            if (s == schedule) {
+            Log.d("Schedule names ", s.getExercises().toString());
+
+            if (s.getName().equals(schedule.getName())) {
                 return s;
             }
         }

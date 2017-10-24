@@ -10,24 +10,24 @@ import java.util.ArrayList;
 
 
 @IgnoreExtraProperties
-public class Schedule implements Serializable {
+public class Schedule {
     private String name;
-    private ArrayList<Exercise> excercises;
+    private ArrayList<Exercise> exercises;
     private boolean isActive;
 
     public Schedule(){
-        this.excercises = new ArrayList<>();
+        this.exercises = new ArrayList<>();
     }
 
-    public void addExcercise(Exercise excercise){
-        excercises.add(excercise);
+    public void addExcercise(Exercise exercise){
+        exercises.add(exercise);
     }
-    public void removeEcercise(Exercise excercise){
-        excercises.remove(excercise);
+    public void removeEcercise(Exercise exercise){
+        exercises.remove(exercise);
     }
 
     public ArrayList<Exercise> getExercises(){
-        return this.excercises;
+        return this.exercises;
     }
 
     public String getName() {
@@ -53,4 +53,12 @@ public class Schedule implements Serializable {
         return this.name;
     }
 
+    public Exercise getExercise(Exercise exercise){
+        for (Exercise e : exercises) {
+            if (e.getName().equals(exercise.getName())) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
