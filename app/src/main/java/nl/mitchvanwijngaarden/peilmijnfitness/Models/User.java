@@ -1,5 +1,7 @@
 package nl.mitchvanwijngaarden.peilmijnfitness.Models;
 
+import android.util.Log;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ public class User {
     private int weight;
     private Date dateOfBirth;
     private ArrayList<Schedule> schedules;
+    private ArrayList<Exercise> exercises;
 
     public String getName() {
         return name;
@@ -46,14 +49,34 @@ public class User {
         return schedules;
     }
 
+    public Schedule getSchedule(Schedule schedule){
+        for (Schedule s : schedules) {
+            Log.d("Schedule names ", s.getExercises().toString());
+
+            if (s.getName().equals(schedule.getName())) {
+                return s;
+            }
+        }
+        return null;
+    }
 
     public void addSchedules(Schedule schedule){
         this.schedules.add(schedule);
     }
 
+    public ArrayList<Exercise> getExcercises() {
+        return exercises;
+    }
+
+
+    public void addExcercise(Exercise excercise){
+        this.exercises.add(excercise);
+    }
+
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
         this.schedules = new ArrayList<>();
+        this.exercises = new ArrayList<>();
     }
 
     public void setAuthenticationID(String authenticationID){

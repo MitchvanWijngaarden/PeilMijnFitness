@@ -1,12 +1,7 @@
 package nl.mitchvanwijngaarden.peilmijnfitness;
 
-import android.content.Intent;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,25 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import nl.mitchvanwijngaarden.peilmijnfitness.Helpers.AuthenticationChecker;
-import nl.mitchvanwijngaarden.peilmijnfitness.Models.Excercise;
-import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
-import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private DatabaseReference mDatabase;
 
 
     @Override
@@ -44,41 +23,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        AuthenticationChecker authChecker = new AuthenticationChecker();
-
-        if(authChecker.isAuthenticated() == false){
-            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            //finish();
-        }
-
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_LONG).show();
-
-        User user = new User();
-        user.setAuthenticationID(currentFirebaseUser.getUid());
-        user.setName("Mitch");
-        Schedule schedule = new Schedule();
-        schedule.setName("5x5 starting strength");
-        Excercise excercise = new Excercise();
-        excercise.setName("Bankdrukken");
-        schedule.addExcercise(excercise);
-        user.addSchedules(schedule);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-        //mDatabase.child("users").child(user.getAuthenticationID()).setValue(user);
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -87,35 +31,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View header = navigationView.getHeaderView(0);
-        TextView test = (TextView)header.findViewById(R.id.textView2);
-
-        test.setText(user.getName());
 
 
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-
-        database.child("users").child(user.getAuthenticationID()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                Log.d("Debug", user.getName());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-
-
+        displaySelectedScreen(R.id.nav_home);
     }
-
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -143,28 +66,42 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void displaySelectedScreen(int id){
+        Fragment fragment = null;
+        switch(id){
+            case R.id.nav_home:
+                fragment = new HomeFragment();
+                break;
+            case R.id.nav_schedules:
+                fragment = new ScheduleFragment();
+                break;
+            case R.id.nav_account:
+                fragment = new WorkoutHolderFragment();
+                break;
+        }
+
+        if (fragment != null) {
+            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_schedules) {
+        displaySelectedScreen(id);
 
-        } else if (id == R.id.nav_excercises) {
-
-        } else if (id == R.id.nav_progress) {
-
-        } else if (id == R.id.nav_account) {
-
-        } else if (id == R.id.nav_logout) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

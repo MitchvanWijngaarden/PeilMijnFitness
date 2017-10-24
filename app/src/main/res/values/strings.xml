@@ -24,7 +24,7 @@
     <string name="btn_link_to_register">Nog geen lid? Meld u nu aan!</string>
     <string name="btn_link_to_login">Al geregistreerd. Login!</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
-    <string name="btn_forgot_password">Forgot your password?</string>
+    <string name="btn_forgot_password">Wachtwoord vergeten?</string>
     <string name="btn_reset_password">Reset Password</string>
     <string name="btn_back"><![CDATA[<< Back]]></string>
     <string name="hint_new_email">New Email</string>
@@ -36,4 +36,22 @@
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="name">Naam</string>
+    <string name="title_activity_excercise">ExcerciseActivity</string>
+    <string name="excercise">Naam oefening</string>
+    <string name="add_button">Toevoegen</string>
+    <string name="cancel">Annuleer</string>
+    <string name="dialog_exercise_message">Voer naam in</string>
+    <string name="dialog_exercise_title">Oefening</string>
+    <string name="edit_button">Bewerk</string>
+    <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="title_activity_schedule_details">ScheduleDetailsActivity</string>
+    <string name="exerciseReps">Aantal herhalingen</string>
+    <string name="exerciseSets">Aantal sets</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="Schedules">Schema\'s</string>
+    <string name="Progress">Voortgang</string>
+    <string name="account">Mijn account</string>
+    <string name="progresInput">Gewicht in kg</string>
+    <string name="btn_offline">Offline modus</string>
 </resources>
