@@ -64,6 +64,7 @@ public class WorkoutExerciseDialogFragment extends DialogFragment{
             public void onClick(View v) {
                 Progress p = new Progress();
                 p.setWeightLifted(Double.parseDouble(progressWeightField.getText().toString()));
+                p.setDateOfToday();
 
                 currentUser.getSchedule(schedule).getExercise(exercise).addProgress(p);
 

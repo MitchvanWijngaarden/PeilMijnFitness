@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Collections;
+
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Exercise;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Progress;
@@ -73,6 +75,14 @@ public class WorkoutExerciseFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tabLayout.getSelectedTabPosition() == 0) {
                 }
+                else if(tabLayout.getSelectedTabPosition() == 1) {
+                    WorkoutExerciseProgressFragment fragment = new WorkoutExerciseProgressFragment();
+                    fragment.setSelectedExerciseAndSchedule(selectedExercise, selectedSchedule);
+                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.content_main, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
 
             @Override
@@ -104,6 +114,7 @@ public class WorkoutExerciseFragment extends Fragment {
             workoutExerciseList.setAdapter(adapter);
 
             workoutExerciseList.setClickable(true);
+
             workoutExerciseList.setOnItemClickListener(new ListView.OnItemClickListener() {
 
                 @Override
