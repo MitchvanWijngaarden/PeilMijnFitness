@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset, btnOffline;
     private SharedPreferences mPrefs;
+    private boolean firstLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,12 +129,17 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
+
+
                                     database.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             User user = dataSnapshot.getValue(User.class);
                                             AuthenticatedUser.INSTANCE.setCurrentUser(user);
-
+                                            if(firstLogin == true){
+                                                firstLogin = false;
+                                                ChangeToMainActivity();
+                                            }
                                         }
 
                                         @Override
@@ -143,7 +149,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                     });
 
-                                    ChangeToMainActivity();
 
                                 }
                             }

@@ -91,11 +91,12 @@ public class WorkoutExerciseDialogFragment extends DialogFragment{
                     });
                 } else{
                     Gson gson = new Gson();
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences prefs = getActivity().getSharedPreferences("USERACCOUNT",0);
                     SharedPreferences.Editor prefsEditor = prefs.edit();
                     String json = gson.toJson(currentUser); // myObject - instance of MyObject
                     prefsEditor.putString("user", json);
                     prefsEditor.commit();
+                    dismiss();
                 }
 
             }
