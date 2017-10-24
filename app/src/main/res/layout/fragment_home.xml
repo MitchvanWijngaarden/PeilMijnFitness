@@ -40,7 +40,7 @@
                 android:id="@+id/schedule_amount"
                 android:layout_toRightOf="@+id/schedule_icon"
                 android:layout_below="@+id/schedule_text"
-                android:text="21 Beschikbaar" />
+                android:text="" />
 
         </RelativeLayout>
 

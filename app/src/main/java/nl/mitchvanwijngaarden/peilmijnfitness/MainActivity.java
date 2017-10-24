@@ -1,7 +1,9 @@
 package nl.mitchvanwijngaarden.peilmijnfitness;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,8 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth auth;
 
 
     @Override
@@ -34,6 +43,26 @@ public class MainActivity extends AppCompatActivity
 
 
         displaySelectedScreen(R.id.nav_home);
+
+        if(!AuthenticatedUser.INSTANCE.getCurrentUser().getIsOffline()){
+            auth = FirebaseAuth.getInstance();
+
+            //get current user
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            authListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user == null) {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                }
+            };
+        }
+
+
     }
     @Override
     public void onBackPressed() {
@@ -79,6 +108,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_account:
                 fragment = new WorkoutHolderFragment();
                 break;
+            case R.id.nav_logout:
+                auth.signOut();
         }
 
         if (fragment != null) {
