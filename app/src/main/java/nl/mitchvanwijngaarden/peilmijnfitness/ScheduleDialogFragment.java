@@ -2,7 +2,9 @@ package nl.mitchvanwijngaarden.peilmijnfitness;
 
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
@@ -63,27 +66,31 @@ public class ScheduleDialogFragment extends DialogFragment{
                 currentUser.addSchedules(s);
                 rootFragment.notifyAdapter();
 
-                mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-                mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        Log.d("Debug ", "onComplete");
-                        dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        Log.d("Debug ", "OnCancelled");
-                    }
-                });
-
-
-
-
+                if(!currentUser.getIsOffline()){
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+                            Log.d("Debug ", "onComplete");
+                            dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+                            Log.d("Debug ", "OnCancelled");
+                        }
+                    });
+                } else{
+                    Gson gson = new Gson();
+                    SharedPreferences prefs = getActivity().getSharedPreferences("USERACCOUNT",0);
+                    SharedPreferences.Editor prefsEditor = prefs.edit();
+                    String json = gson.toJson(currentUser); // myObject - instance of MyObject
+                    prefsEditor.putString("user", json);
+                    prefsEditor.commit();
+                    dismiss();
+                }
             }
         });
 

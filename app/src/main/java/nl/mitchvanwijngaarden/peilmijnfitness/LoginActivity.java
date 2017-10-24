@@ -1,5 +1,6 @@
 package nl.mitchvanwijngaarden.peilmijnfitness;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,8 +30,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.Exercise;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Schedule;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
@@ -39,7 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
+    private Button btnSignup, btnLogin, btnReset, btnOffline;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
+        btnOffline = (Button) findViewById(R.id.btn_offline_mode);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -83,6 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                 //startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
+
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,13 +142,43 @@ public class LoginActivity extends AppCompatActivity {
                                         }
 
                                     });
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+
+                                    ChangeToMainActivity();
+
                                 }
                             }
                         });
             }
         });
+
+        btnOffline.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            public void onClick(View v) {
+                Gson gson = new Gson();
+                mPrefs = getSharedPreferences("USERACCOUNT",0);
+                if(!mPrefs.contains("user")){
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    User user = new User();
+                    user.setName("Offline user");
+                    String json = gson.toJson(user); // myObject - instance of MyObject
+                    prefsEditor.putString("user", json);
+                    prefsEditor.commit();
+                }
+                String json = mPrefs.getString("user", "");
+                User user = gson.fromJson(json, User.class);
+                user.setOffline(true);
+                Log.d("User login: ", user.toString());
+
+                AuthenticatedUser.INSTANCE.setCurrentUser(user);
+                ChangeToMainActivity();
+            }
+        });
+    }
+
+    private void ChangeToMainActivity(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

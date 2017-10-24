@@ -1,7 +1,9 @@
 package nl.mitchvanwijngaarden.peilmijnfitness;
 
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.Exercise;
@@ -32,9 +35,9 @@ public class WorkoutExerciseDialogFragment extends DialogFragment{
     private Button dismissButton, addButton;
     private EditText progressWeightField;
     private User currentUser;
-    private DatabaseReference mDatabase;
     private Schedule schedule;
     private Exercise exercise;
+    private SharedPreferences mPrefs;
 
     public void setRootFragment(WorkoutExerciseFragment rootFragment) {
         this.rootFragment = rootFragment;
@@ -43,7 +46,7 @@ public class WorkoutExerciseDialogFragment extends DialogFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dialog_progress, container, false);
+        final View rootView = inflater.inflate(R.layout.dialog_progress, container, false);
         getDialog().setTitle("Toevoegen voortgang");
 
         currentUser = AuthenticatedUser.INSTANCE.getCurrentUser();
@@ -70,22 +73,31 @@ public class WorkoutExerciseDialogFragment extends DialogFragment{
 
                 rootFragment.notifyAdapter();
 
-                mDatabase = FirebaseDatabase.getInstance().getReference();
+                if(!currentUser.getIsOffline()){
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+                            Log.d("Debug ", "onComplete");
+                            dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+                            Log.d("Debug ", "OnCancelled");
+                        }
+                    });
+                } else{
+                    Gson gson = new Gson();
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor prefsEditor = prefs.edit();
+                    String json = gson.toJson(currentUser); // myObject - instance of MyObject
+                    prefsEditor.putString("user", json);
+                    prefsEditor.commit();
+                }
 
-                mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        Log.d("Debug ", "onComplete");
-                        dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        Log.d("Debug ", "OnCancelled");
-                    }
-                });
             }
         });
 

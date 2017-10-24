@@ -16,6 +16,15 @@ public class User {
     private Date dateOfBirth;
     private ArrayList<Schedule> schedules;
     private ArrayList<Exercise> exercises;
+    private boolean isOffline = false;
+
+    public void setOffline(boolean offline) {
+        isOffline = offline;
+    }
+
+    public boolean getIsOffline(){
+        return this.isOffline;
+    }
 
     public String getName() {
         return name;
