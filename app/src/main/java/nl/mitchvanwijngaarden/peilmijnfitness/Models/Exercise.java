@@ -1,5 +1,6 @@
 package nl.mitchvanwijngaarden.peilmijnfitness.Models;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -14,6 +15,13 @@ public class Exercise{
     private String name;
     private int reps;
     private int sets;
+
+    @Exclude
+    private int FORMAT_TYPE = 0;
+
+    public void setFormatType(int formatType) {
+        FORMAT_TYPE = formatType;
+    }
 
     private ArrayList<Progress> workoutProgressList;
 
@@ -58,8 +66,22 @@ public class Exercise{
     }
 
     public String toString(){
-        return this.name + " " + reps + " repetitions, " + sets + " sets.";
+        return displayToUI();
     }
 
-
+    @Exclude
+    private String displayToUI(){
+        switch (FORMAT_TYPE) {
+            case 0:
+                return this.name + " " + reps + " repetitions, " + sets + " sets.";
+            case 1:
+                if(workoutProgressList.size() != 0) {
+                    return this.name + " " + workoutProgressList.get(workoutProgressList.size() - 1).toString();
+                } else {
+                    return this.name;
+                }
+            default:
+                return this.name;
+        }
+    }
 }

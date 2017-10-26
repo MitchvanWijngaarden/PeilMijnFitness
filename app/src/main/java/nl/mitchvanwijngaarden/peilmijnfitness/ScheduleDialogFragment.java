@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,7 +42,7 @@ public class ScheduleDialogFragment extends DialogFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dialog_schedule, container, false);
+        final View rootView = inflater.inflate(R.layout.dialog_schedule, container, false);
         getDialog().setTitle("Nieuw schema");
 
         currentUser = AuthenticatedUser.INSTANCE.getCurrentUser();
@@ -61,36 +62,41 @@ public class ScheduleDialogFragment extends DialogFragment{
             @Override
             public void onClick(View v) {
                 Schedule s = new Schedule();
-                s.setName(nameScheduleField.getText().toString());
+                if(!nameScheduleField.getText().toString().isEmpty()){
+                    s.setName(nameScheduleField.getText().toString());
 
-                currentUser.addSchedules(s);
-                rootFragment.notifyAdapter();
+                    currentUser.addSchedules(s);
+                    rootFragment.notifyAdapter();
 
-                if(!currentUser.getIsOffline()){
-                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task)
-                        {
-                            Log.d("Debug ", "onComplete");
-                            dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            Log.d("Debug ", "OnCancelled");
-                        }
-                    });
-                } else{
-                    Gson gson = new Gson();
-                    SharedPreferences prefs = getActivity().getSharedPreferences("USERACCOUNT",0);
-                    SharedPreferences.Editor prefsEditor = prefs.edit();
-                    String json = gson.toJson(currentUser); // myObject - instance of MyObject
-                    prefsEditor.putString("user", json);
-                    prefsEditor.commit();
-                    dismiss();
+                    if(!currentUser.getIsOffline()){
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                        mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+                                Log.d("Debug ", "onComplete");
+                                dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                Log.d("Debug ", "OnCancelled");
+                            }
+                        });
+                    } else{
+                        Gson gson = new Gson();
+                        SharedPreferences prefs = getActivity().getSharedPreferences("USERACCOUNT",0);
+                        SharedPreferences.Editor prefsEditor = prefs.edit();
+                        String json = gson.toJson(currentUser); // myObject - instance of MyObject
+                        prefsEditor.putString("user", json);
+                        prefsEditor.commit();
+                        dismiss();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Voer een naam in voor het schema.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 

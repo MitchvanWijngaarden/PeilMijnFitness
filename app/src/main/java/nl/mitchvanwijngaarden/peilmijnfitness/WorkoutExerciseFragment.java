@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,7 +29,9 @@ public class WorkoutExerciseFragment extends Fragment {
     private TextView listviewItem;
     private User currentUser;
     private FloatingActionButton fab;
+    private Button deleteExerciseButton;
     private WorkoutExerciseDialogFragment wedf;
+    private AreYouSureDialogFragment aysdf;
     private FragmentManager fm;
     private Schedule selectedSchedule;
     private Exercise selectedExercise;
@@ -45,6 +48,7 @@ public class WorkoutExerciseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         workoutExerciseList = (ListView) getView().findViewById(R.id.schedulelist);
+        deleteExerciseButton = (Button) getView().findViewById(R.id.btn_delete_exercise);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
         fm = getFragmentManager();
@@ -52,12 +56,25 @@ public class WorkoutExerciseFragment extends Fragment {
         wedf.setRootFragment(this);
         wedf.setSelectedExerciseAndSchedule(selectedExercise, selectedSchedule);
 
+        aysdf = new AreYouSureDialogFragment();
+
+
         getActivity().setTitle(selectedExercise.getName());
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        if(selectedSchedule == null) {
+            fab.hide();
+        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleAddButtonPress();
+            }
+        });
+        deleteExerciseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleRemoveButtonpress();
             }
         });
 
@@ -98,12 +115,14 @@ public class WorkoutExerciseFragment extends Fragment {
     }
 
     private void handleAddButtonPress() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                wedf.show(fm, "Exercise add progress dialog");
-            }
-        });
+        wedf.show(fm, "Exercise add progress dialog");
+    }
+
+    private void handleRemoveButtonpress() {
+        aysdf.setSelectedSchedule(selectedSchedule);
+        aysdf.setObjectToDelete(selectedExercise);
+        aysdf.setDismissText("Je raakt hiermee ook alle voortgang kwijt wat je in deze oefening hebt gezet.");
+        aysdf.show(fm, "Exercise remove");
     }
 
     private void populateListView() {

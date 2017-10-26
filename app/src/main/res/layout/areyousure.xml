@@ -7,23 +7,12 @@
     android:padding="16dp"
     tools:context="nl.mitchvanwijngaarden.peilmijnfitness.ScheduleDialogFragment">
 
-    <android.support.design.widget.TextInputLayout
+
+    <TextView
+        android:id="@+id/areyousure_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/primaryTextColor" >
-
-        <EditText
-            android:id="@+id/schedule_name_input"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="4dp"
-            android:hint="@string/scheduleInput" />
-
-    </android.support.design.widget.TextInputLayout>
+        android:text="" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -34,19 +23,18 @@
             android:layout_height="match_parent" >
 
             <Button
-                android:id="@+id/dismiss_schedule"
+                android:id="@+id/dismiss_areyousure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Annuleer" />
 
             <Button
-                android:id="@+id/add_schedule"
+                android:id="@+id/remove_areyousure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Toevoegen" />
+                android:text="Verwijder" />
         </TableRow>
 
     </TableLayout>
-
 
 </LinearLayout>

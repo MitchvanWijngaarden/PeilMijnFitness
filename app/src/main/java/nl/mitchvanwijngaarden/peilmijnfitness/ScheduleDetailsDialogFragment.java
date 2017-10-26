@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +35,13 @@ public class ScheduleDetailsDialogFragment extends DialogFragment {
     private User currentUser;
     private DatabaseReference mDatabase;
     private Schedule schedule;
+    private boolean editMode = false;
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
+    }
+
+
 
     public void setRootFragment(ScheduleDetailsFragment rootFragment) {
         this.rootFragment = rootFragment;
@@ -43,7 +51,6 @@ public class ScheduleDetailsDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dialog_excercise, container, false);
-        getDialog().setTitle("Nieuwe oefening");
 
         currentUser = AuthenticatedUser.INSTANCE.getCurrentUser();
 
@@ -60,44 +67,47 @@ public class ScheduleDetailsDialogFragment extends DialogFragment {
         });
 
         addButton = (Button) rootView.findViewById(R.id.add_exercise);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Exercise e = new Exercise();
-                e.setName(nameExerciseField.getText().toString());
-                e.setReps(Integer.parseInt(repsExerciseField.getText().toString()));
-                e.setSets(Integer.parseInt(setsExerciseField.getText().toString()));
+                if (!nameExerciseField.getText().toString().isEmpty() && !repsExerciseField.getText().toString().isEmpty() && !setsExerciseField.getText().toString().isEmpty()) {
+                    Exercise e = new Exercise();
+                    e.setName(nameExerciseField.getText().toString());
+                    e.setReps(Integer.parseInt(repsExerciseField.getText().toString()));
+                    e.setSets(Integer.parseInt(setsExerciseField.getText().toString()));
 
-                currentUser.getSchedule(schedule).addExcercise(e);
-                rootFragment.notifyAdapter();
+                    currentUser.getSchedule(schedule).addExcercise(e);
+                    rootFragment.notifyAdapter();
 
-                if(!currentUser.getIsOffline()){
-                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task)
-                        {
-                            Log.d("Debug ", "onComplete");
-                            dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            Log.d("Debug ", "OnCancelled");
-                        }
-                    });
-                } else{
-                    Gson gson = new Gson();
-                    SharedPreferences prefs = getActivity().getSharedPreferences("USERACCOUNT",0);
-                    SharedPreferences.Editor prefsEditor = prefs.edit();
-                    String json = gson.toJson(currentUser); // myObject - instance of MyObject
-                    prefsEditor.putString("user", json);
-                    prefsEditor.commit();
-                    dismiss();
+                    if (!currentUser.getIsOffline()) {
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                        mDatabase.child("users").child(currentUser.getAuthenticationID()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d("Debug ", "onComplete");
+                                dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("Debug ", "OnCancelled");
+                            }
+                        });
+                    } else {
+                        Gson gson = new Gson();
+                        SharedPreferences prefs = getActivity().getSharedPreferences("USERACCOUNT", 0);
+                        SharedPreferences.Editor prefsEditor = prefs.edit();
+                        String json = gson.toJson(currentUser); // myObject - instance of MyObject
+                        prefsEditor.putString("user", json);
+                        prefsEditor.commit();
+                        dismiss();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Één of meerdere velden zijn niet ingevoerd, vul deze in alstublieft.", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+            });
 
         return rootView;
     }

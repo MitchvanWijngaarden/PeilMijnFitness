@@ -2,6 +2,7 @@ package nl.mitchvanwijngaarden.peilmijnfitness.Models;
 
 import android.util.Log;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;

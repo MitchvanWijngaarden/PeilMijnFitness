@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -60,12 +61,7 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void handleAddButtonPress() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sdf.show(fm, "Schedule add dialog");
-            }
-        });
+        sdf.show(fm, "Schedule add dialog");
     }
 
     private void populateListView() {

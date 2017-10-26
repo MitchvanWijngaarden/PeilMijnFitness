@@ -18,12 +18,13 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test tabs" />
+        android:text="De onderstaande diagram toont de voortgang van de door u gekozen oefening." />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:padding="16dp"/>
 
 
 </LinearLayout>
