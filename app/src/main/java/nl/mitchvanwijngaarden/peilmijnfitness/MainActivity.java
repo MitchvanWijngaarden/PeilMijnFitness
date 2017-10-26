@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_schedules:
                 fragment = new ScheduleFragment();
                 break;
+            case R.id.nav_progress:
+                fragment = new ProgressFragment();
+                break;
             case R.id.nav_logout:
                 if(!currentUser.getIsOffline()){
                     auth.signOut();
