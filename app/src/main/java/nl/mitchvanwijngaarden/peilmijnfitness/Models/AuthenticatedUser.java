@@ -22,9 +22,6 @@ public enum AuthenticatedUser {
     INSTANCE;
 
     private User currentUser;
-    private DatabaseReference mDatabase;
-    private SharedPreferences mPrefs;
-    private Context context;
 
     public User getCurrentUser(){
         return this.currentUser;

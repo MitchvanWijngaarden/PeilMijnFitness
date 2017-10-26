@@ -55,4 +55,7 @@
     <string name="progresInput">Gewicht in kg</string>
     <string name="btn_offline">Offline modus</string>
     <string name="scheduleInput">Naam schema</string>
+    <string name="delete_schedule">Verwijder schema</string>
+    <string name="delete_exercise">Verwijder oefening</string>
+    <string name="edit_schedule">Pas naam aan</string>
 </resources>

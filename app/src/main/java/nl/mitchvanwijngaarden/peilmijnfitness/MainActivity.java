@@ -10,18 +10,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import nl.mitchvanwijngaarden.peilmijnfitness.Models.AuthenticatedUser;
+import nl.mitchvanwijngaarden.peilmijnfitness.Models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    private User currentUser;
 
 
     @Override
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        currentUser = AuthenticatedUser.INSTANCE.getCurrentUser();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,13 +47,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.userName);
+        navUsername.setText(currentUser.getName());
 
         displaySelectedScreen(R.id.nav_home);
 
         if(!AuthenticatedUser.INSTANCE.getCurrentUser().getIsOffline()){
             auth = FirebaseAuth.getInstance();
 
-            //get current user
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             authListener = new FirebaseAuth.AuthStateListener() {
@@ -61,9 +69,8 @@ public class MainActivity extends AppCompatActivity
                 }
             };
         }
-
-
     }
+
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0 ){
@@ -75,19 +82,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -105,11 +107,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_schedules:
                 fragment = new ScheduleFragment();
                 break;
-            case R.id.nav_account:
-                fragment = new WorkoutHolderFragment();
-                break;
             case R.id.nav_logout:
-                auth.signOut();
+                if(!currentUser.getIsOffline()){
+                    auth.signOut();
+                }
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
         }
 
         if (fragment != null) {
@@ -126,13 +130,8 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         displaySelectedScreen(id);
-
         return true;
     }
-
-
 }

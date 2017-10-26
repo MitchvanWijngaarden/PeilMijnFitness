@@ -38,10 +38,8 @@ public class WorkoutExerciseProgressFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_progresschart, container, false);
-
         return view;
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -58,20 +56,22 @@ public class WorkoutExerciseProgressFragment extends Fragment {
         List<Entry> entries = new ArrayList<Entry>();
 
         int i = 0;
-        for (Progress p : selectedExercise.getWorkoutProgressList()) {
+        if(!selectedExercise.getWorkoutProgressList().isEmpty()) {
+            for (Progress p : selectedExercise.getWorkoutProgressList()) {
 
-            float pWeight = (float) p.getWeightLifted();
-            // turn your data into Entry objects
-            entries.add(new Entry(i, pWeight));
-            i++;
+                float pWeight = (float) p.getWeightLifted();
+                // turn your data into Entry objects
+                entries.add(new Entry(i, pWeight));
+                i++;
+            }
+
+            LineDataSet dataSet = new LineDataSet(entries, "Gewicht in kg."); // add entries to dataset
+
+            LineData lineData = new LineData(dataSet);
+            chart.setData(lineData);
+            chart.getDescription().setEnabled(false);
+            chart.invalidate(); // refresh
         }
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
-
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
-        chart.invalidate(); // refresh
-
     }
 
     private void createTopTabBar() {
