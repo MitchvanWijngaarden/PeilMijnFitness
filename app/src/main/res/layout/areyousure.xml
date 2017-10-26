@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="nl.mitchvanwijngaarden.peilmijnfitness.ScheduleDialogFragment">
+
+
+    <TextView
+        android:id="@+id/areyousure_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/dismiss_areyousure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Annuleer" />
+
+            <Button
+                android:id="@+id/remove_areyousure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Verwijder" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
